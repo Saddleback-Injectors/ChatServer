@@ -1,4 +1,4 @@
-# ChatClient
+# ChatServer
 
 Saddleback College CS4B mini project
 
