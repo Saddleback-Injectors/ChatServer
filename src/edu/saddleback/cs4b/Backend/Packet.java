@@ -2,7 +2,12 @@ package edu.saddleback.cs4b.Backend;
 
 import java.io.Serializable;
 
-public class Packet {
+/**
+ * This class will be used as a wrapper
+ * to different types of messages that will
+ * be sent
+ */
+public class Packet implements Serializable {
     private String type;
     private Serializable data;
 
