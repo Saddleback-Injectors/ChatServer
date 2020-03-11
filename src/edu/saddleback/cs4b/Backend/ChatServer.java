@@ -11,7 +11,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ChatServer {
     private static List<String> channels = new ArrayList<>();
     private static BlockingQueue<ClientConnection> clients = new LinkedBlockingQueue<>();
-    private static int numClients = 0;
     private static int port = 8080;
 
     public static void turnOn() {
@@ -20,9 +19,10 @@ public class ChatServer {
         try {
             ServerSocket server = new ServerSocket(8080);
 
-            // first testing if a single client is accepted
-            client = server.accept();
-            System.out.println("client Connected");
+            while (isRunning) {
+                client = server.accept();
+                System.out.println("Client Connected");
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
