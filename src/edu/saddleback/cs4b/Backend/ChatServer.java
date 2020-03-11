@@ -16,14 +16,15 @@ public class ChatServer {
     public static void turnOn() {
         boolean isRunning = true;
         Socket client = null;
+        ClientConnection connection = null;
         try {
             ServerSocket server = new ServerSocket(8080);
 
             while (isRunning) {
                 client = server.accept();
-                System.out.println("Client Connected");
+                connection = new ClientConnection(client);
+                clients.add(connection);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
