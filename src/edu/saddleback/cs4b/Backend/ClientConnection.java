@@ -1,5 +1,8 @@
 package edu.saddleback.cs4b.Backend;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +26,15 @@ public class ClientConnection implements Runnable {
         // listen for messages from client until disconnect
         // propagate the message to the publisher
 
-        // the following is just testing multiple clients connected
-        for (int i = 0; i < 5; ++i) {
-            try {
-                Thread.sleep(3500);
-                System.out.println(socket.getInetAddress().getHostName());
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            ObjectInputStream in = new ObjectInputStream(
+                    new BufferedInputStream(socket.getInputStream()));
+            Packet packet = (Packet)in.readObject();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }
