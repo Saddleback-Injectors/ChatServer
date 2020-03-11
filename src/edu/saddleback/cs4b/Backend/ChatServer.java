@@ -16,14 +16,16 @@ public class ChatServer {
     public static void turnOn() {
         boolean isRunning = true;
         Socket client = null;
-        ClientConnection connection = null;
+        ClientConnection clientConnect = null;
+        Thread worker = null;
         try {
             ServerSocket server = new ServerSocket(8080);
-
             while (isRunning) {
                 client = server.accept();
-                connection = new ClientConnection(client);
-                clients.add(connection);
+                clientConnect = new ClientConnection(client);
+                clients.add(clientConnect);
+                worker = new Thread(clientConnect);
+                worker.start();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,5 +36,6 @@ public class ChatServer {
         // will temporarily run the server, later done through
         // our Main class
         ChatServer.turnOn();
+        System.out.println("Server terminated");
     }
 }

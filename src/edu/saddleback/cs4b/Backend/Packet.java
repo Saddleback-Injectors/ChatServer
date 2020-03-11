@@ -19,7 +19,6 @@ public class Packet implements Serializable {
     private void setType(String type) {
         this.type = type;
     }
-
     private void setData(Serializable data) {
         this.data = data;
     }
