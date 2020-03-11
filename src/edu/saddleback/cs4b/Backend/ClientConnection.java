@@ -25,12 +25,10 @@ public class ClientConnection implements Runnable {
     public void run() {
         // listen for messages from client until disconnect
         // propagate the message to the publisher
-
         try {
             ObjectInputStream in = new ObjectInputStream(
                     new BufferedInputStream(socket.getInputStream()));
             Packet packet = (Packet)in.readObject();
-            
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
