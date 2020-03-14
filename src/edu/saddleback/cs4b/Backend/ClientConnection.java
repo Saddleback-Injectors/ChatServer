@@ -12,7 +12,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ClientConnection implements Runnable {
     private Socket socket;
-    private List<String> channels;
+    private final List<String> channels;
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private BlockingQueue<Packet> messages;
@@ -48,4 +48,11 @@ public class ClientConnection implements Runnable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * TODO how to prevent multiple threads trying to write to output stream
+     */
+    public ObjectOutputStream getOutputStream() { return out; }
+    public ObjectInputStream getInputSteam() { return in; }
+    public List<String> getChannelsListening() { return channels; }
 }
