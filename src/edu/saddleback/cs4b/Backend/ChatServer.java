@@ -9,11 +9,25 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ChatServer {
-    private static List<String> channels = new ArrayList<>();
-    private static BlockingQueue<ClientConnection> clients = new LinkedBlockingQueue<>();
-    private static int port = 8000;
+    private List<String> channels;
+    private BlockingQueue<Packet> messages;
+    private List<ClientConnection> clients;
+    private ServerPublisher publisher;
+    private int port = 8000;
 
-    public static void turnOn() {
+    private void runPublisher(ServerPublisher publisher) {
+
+    }
+
+    public ChatServer() {
+        this.channels = new ArrayList<>();
+        this.messages = new LinkedBlockingQueue<>();
+        this.clients  = new ArrayList<>();
+        this.publisher = new ServerPublisher(clients);
+        runPublisher(publisher);
+    }
+
+    public void turnOn() {
         boolean isRunning = true;
         Socket client = null;
         ClientConnection clientConnect = null;
@@ -23,7 +37,7 @@ public class ChatServer {
             while (isRunning) {
                 client = server.accept();
                 clientConnect = new ClientConnection(client);
-                clients.add(clientConnect);
+
                 worker = new Thread(clientConnect);
                 worker.start();
             }
@@ -35,7 +49,5 @@ public class ChatServer {
     public static void main(String[] args) {
         // will temporarily run the server, later done through
         // our Main class
-        ChatServer.turnOn();
-        System.out.println("Server terminated");
     }
 }
