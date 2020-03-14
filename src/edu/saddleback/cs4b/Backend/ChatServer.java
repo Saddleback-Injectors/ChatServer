@@ -9,22 +9,19 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ChatServer {
-    private List<String> channels;
-    private BlockingQueue<Packet> messages;
-    private List<ClientConnection> clients;
-    private ServerPublisher publisher;
-    private int port = 8000;
-
-    private void runPublisher(ServerPublisher publisher) {
-
-    }
+    private final List<String> channels;
+    private final BlockingQueue<Packet> messages;
+    private final List<ClientConnection> clients;
+    private final ServerPublisher publisher;
+    private final int port = 8000;
 
     public ChatServer() {
         this.channels = new ArrayList<>();
         this.messages = new LinkedBlockingQueue<>();
         this.clients  = new ArrayList<>();
         this.publisher = new ServerPublisher(clients);
-        runPublisher(publisher);
+        Thread pubThread = new Thread(publisher);
+        pubThread.start();
     }
 
     public void turnOn() {
@@ -36,8 +33,7 @@ public class ChatServer {
             ServerSocket server = new ServerSocket(port);
             while (isRunning) {
                 client = server.accept();
-                clientConnect = new ClientConnection(client);
-
+                clientConnect = new ClientConnection(client, publisher);
                 worker = new Thread(clientConnect);
                 worker.start();
             }
