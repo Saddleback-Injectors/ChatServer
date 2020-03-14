@@ -17,10 +17,10 @@ public class ClientConnection implements Runnable {
     private ObjectInputStream in;
     private BlockingQueue<Packet> messages;
 
-    private void setupIOStreams(ObjectInputStream in, ObjectOutputStream out) {
+    private void setupIOStreams() {
         try {
-            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-            out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            this.in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            this.out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class ClientConnection implements Runnable {
     public ClientConnection(Socket socket, BlockingQueue<Packet> messages) {
         this.socket = socket;
         this.channels = new ArrayList<>();
-        setupIOStreams(this.in, this.out);
+        setupIOStreams();
         this.messages = messages;
     }
 
@@ -37,11 +37,15 @@ public class ClientConnection implements Runnable {
     public void run() {
         // listen for messages from client until disconnect
         // propagate the message to the publisher
+        boolean connected = true;
         try {
-            ObjectInputStream in = new ObjectInputStream(
-                    new BufferedInputStream(socket.getInputStream()));
-            Packet packet = (Packet)in.readObject();
-            messages.add(packet);
+            while (connected) {
+                Packet packet = (Packet) in.readObject();
+                System.out.println((String)packet.getData());
+                messages.add(packet);
+            }
+        } catch (EOFException eof) {
+            connected = false;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
