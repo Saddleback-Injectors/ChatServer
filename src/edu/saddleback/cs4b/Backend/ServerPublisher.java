@@ -36,6 +36,7 @@ public class ServerPublisher implements Runnable {
             try {
                 out.writeObject(packet);
                 out.flush();
+                out.reset();
             } catch (IOException e) {
                 e.printStackTrace();
             }
