@@ -19,7 +19,7 @@ public class ChatServer {
         this.channels = new ArrayList<>();
         this.messages = new LinkedBlockingQueue<>();
         this.clients  = new ArrayList<>();
-        this.publisher = new ServerPublisher(clients);
+        this.publisher = new ServerPublisher(clients, messages);
         Thread pubThread = new Thread(publisher);
         pubThread.start();
     }
@@ -33,7 +33,7 @@ public class ChatServer {
             ServerSocket server = new ServerSocket(port);
             while (isRunning) {
                 client = server.accept();
-                clientConnect = new ClientConnection(client, publisher);
+                clientConnect = new ClientConnection(client, messages);
                 worker = new Thread(clientConnect);
                 worker.start();
             }
