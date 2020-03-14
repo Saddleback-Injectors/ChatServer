@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * This class will deligate messages from the client
@@ -14,7 +15,7 @@ public class ClientConnection implements Runnable {
     private List<String> channels;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private ServerPublisher publisher;
+    private BlockingQueue<Packet> messages;
 
     private void setupIOStreams(ObjectInputStream in, ObjectOutputStream out) {
         try {
@@ -25,11 +26,11 @@ public class ClientConnection implements Runnable {
         }
     }
 
-    public ClientConnection(Socket socket, ServerPublisher publisher) {
+    public ClientConnection(Socket socket, BlockingQueue<Packet> messages) {
         this.socket = socket;
         this.channels = new ArrayList<>();
         setupIOStreams(this.in, this.out);
-        this.publisher = publisher;
+        this.messages = messages;
     }
 
     @Override
@@ -40,6 +41,7 @@ public class ClientConnection implements Runnable {
             ObjectInputStream in = new ObjectInputStream(
                     new BufferedInputStream(socket.getInputStream()));
             Packet packet = (Packet)in.readObject();
+            messages.add(packet);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
