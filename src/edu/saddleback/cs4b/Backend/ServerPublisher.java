@@ -1,10 +1,10 @@
 package edu.saddleback.cs4b.Backend;
 
-import java.util.concurrent.BlockingQueue;
+import java.util.List;
 
 public class ServerPublisher {
-    private BlockingQueue<ClientConnection> clients;
-    ServerPublisher(BlockingQueue<ClientConnection> clients) {
+    private List<ClientConnection> clients;
+    ServerPublisher(List<ClientConnection> clients) {
         this.clients = clients;
     }
 }
