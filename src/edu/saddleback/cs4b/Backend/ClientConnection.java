@@ -41,7 +41,6 @@ public class ClientConnection implements Runnable {
         try {
             while (connected) {
                 Packet packet = (Packet) in.readObject();
-                System.out.println((String)packet.getData());
                 messages.add(packet);
             }
         } catch (EOFException eof) {

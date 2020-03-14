@@ -34,6 +34,7 @@ public class ChatServer {
             while (isRunning) {
                 client = server.accept();
                 clientConnect = new ClientConnection(client, messages);
+                clients.add(clientConnect);
                 worker = new Thread(clientConnect);
                 worker.start();
             }
@@ -45,5 +46,6 @@ public class ChatServer {
     public static void main(String[] args) {
         // will temporarily run the server, later done through
         // our Main class
+        new ChatServer().turnOn();
     }
 }
