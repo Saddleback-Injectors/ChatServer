@@ -13,23 +13,11 @@ import java.util.concurrent.BlockingQueue;
 public class ClientConnection implements Runnable {
     private Socket socket;
     private final List<String> channels;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
     private BlockingQueue<Packet> messages;
-
-    private void setupIOStreams() {
-        try {
-            this.in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-            this.out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public ClientConnection(Socket socket, BlockingQueue<Packet> messages) {
         this.socket = socket;
         this.channels = new ArrayList<>();
-        setupIOStreams();
         this.messages = messages;
     }
 
@@ -39,6 +27,7 @@ public class ClientConnection implements Runnable {
         // propagate the message to the publisher
         boolean connected = true;
         try {
+            ObjectInputStream in = getInputSteam();
             while (connected) {
                 Packet packet = (Packet) in.readObject();
                 messages.add(packet);
@@ -55,7 +44,23 @@ public class ClientConnection implements Runnable {
     /**
      * TODO how to prevent multiple threads trying to write to output stream
      */
-    public ObjectOutputStream getOutputStream() { return out; }
-    public ObjectInputStream getInputSteam() { return in; }
+    public ObjectOutputStream getOutputStream() {
+        try {
+            return new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ObjectInputStream getInputSteam() {
+        try {
+            return new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<String> getChannelsListening() { return channels; }
 }
