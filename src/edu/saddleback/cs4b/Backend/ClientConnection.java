@@ -1,8 +1,6 @@
 package edu.saddleback.cs4b.Backend;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +12,24 @@ import java.util.List;
 public class ClientConnection implements Runnable {
     private Socket socket;
     private List<String> channels;
-    // maybe a publisher here later
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private ServerPublisher publisher;
 
-    public ClientConnection(Socket socket) {
+    private void setupIOStreams(ObjectInputStream in, ObjectOutputStream out) {
+        try {
+            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ClientConnection(Socket socket, ServerPublisher publisher) {
         this.socket = socket;
         this.channels = new ArrayList<>();
+        setupIOStreams(this.in, this.out);
+        this.publisher = publisher;
     }
 
     @Override
