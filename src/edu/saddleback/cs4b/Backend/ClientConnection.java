@@ -1,5 +1,7 @@
 package edu.saddleback.cs4b.Backend;
 
+import edu.saddleback.cs4b.Backend.Messages.RegMessage;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class ClientConnection implements Runnable {
             ObjectInputStream in = getInputSteam();
             while (connected) {
                 Packet packet = (Packet) in.readObject();
+                // move this inside of delegate message
                 messages.add(packet);
             }
         } catch (EOFException eof) {
@@ -40,6 +43,15 @@ public class ClientConnection implements Runnable {
             e.printStackTrace();
         }
     }
+
+    private void delegateMsg(Packet packet) {
+        // Message msg = (Message)packet.getData()
+        Serializable data = packet.getData();
+        if (data instanceof RegMessage) {
+            // registerNewUser()
+        }
+    }
+
 
     /**
      * TODO how to prevent multiple threads trying to write to output stream
