@@ -1,6 +1,7 @@
 package edu.saddleback.cs4b.Backend;
 
 import edu.saddleback.cs4b.Backend.Messages.RegMessage;
+import edu.saddleback.cs4b.Backend.Messages.TextMessage;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,13 +15,15 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ClientConnection implements Runnable {
     private Socket socket;
-    private final List<String> channels;
+    private List<String> channels;
     private BlockingQueue<Packet> messages;
+    private String username;
 
     public ClientConnection(Socket socket, BlockingQueue<Packet> messages) {
         this.socket = socket;
-        this.channels = new ArrayList<>();
+        this.channels = null;
         this.messages = messages;
+        this.username = "";
     }
 
     @Override
@@ -48,10 +51,22 @@ public class ClientConnection implements Runnable {
         // Message msg = (Message)packet.getData()
         Serializable data = packet.getData();
         if (data instanceof RegMessage) {
-            // registerNewUser()
+            register((RegMessage)data);
+            // add a notification message since we don't
+            // want another client to have direct access to registeration
+
+            // this is temporary for testing
+            String joinMsg = username + " had joined";
+            messages.add(new Packet("Text-Message", new TextMessage("A", joinMsg)));
+        } else if (data instanceof TextMessage) {
+            messages.add(packet);
         }
     }
 
+    private void register(RegMessage message) {
+        channels = message.getChannels();
+        username = message.getUserName();
+    }
 
     /**
      * TODO how to prevent multiple threads trying to write to output stream
@@ -74,5 +89,8 @@ public class ClientConnection implements Runnable {
         return null;
     }
 
+    /**
+     * TODO return a copy of the channels listening but not direct access
+     */
     public List<String> getChannelsListening() { return channels; }
 }
