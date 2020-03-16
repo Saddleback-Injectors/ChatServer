@@ -1,5 +1,6 @@
 package edu.saddleback.cs4b.Backend;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
@@ -29,11 +30,15 @@ public class ServerPublisher implements Runnable {
         }
     }
 
+    /**
+     *Todo is it ineffective to create new output streams everytime?
+     * was not working the old way
+     */
     private void distribute(Packet packet) {
         ObjectOutputStream out = null;
         for (ClientConnection c : clients) {
-            out = c.getOutputStream();
             try {
+                out = new ObjectOutputStream(new BufferedOutputStream(c.getOutputStream()));
                 out.writeObject(packet);
                 out.flush();
                 out.reset();

@@ -36,7 +36,8 @@ public class ClientConnection implements Runnable {
             while (connected) {
                 Packet packet = (Packet) in.readObject();
                 // move this inside of delegate message
-                messages.add(packet);
+                //messages.add(packet);
+                delegateMsg(packet);
             }
         } catch (EOFException eof) {
             connected = false;
@@ -68,12 +69,12 @@ public class ClientConnection implements Runnable {
         username = message.getUserName();
     }
 
-    /**
-     * TODO how to prevent multiple threads trying to write to output stream
-     */
-    public ObjectOutputStream getOutputStream() {
+   /**
+    * TODO how to prevent multiple threads trying to write to output stream
+    */
+    public OutputStream getOutputStream() {
         try {
-            return new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            return socket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
