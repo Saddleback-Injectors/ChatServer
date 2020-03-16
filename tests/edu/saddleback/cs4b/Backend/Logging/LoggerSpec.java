@@ -10,19 +10,20 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoggerSpec {
-    private Logger logger;
+    private Logger logger = ServerLog.getLogger();
+    private Logger tstLogger;
     private final PrintStream systemOut = System.out;
     private final ByteArrayOutputStream consoleOut = new ByteArrayOutputStream();
 
     @BeforeEach
     void init() {
-        logger = new Logger();
+        tstLogger = new Logger();
     }
 
     @Test
     @DisplayName("New Log should have empty message")
     void newLogHasEmptyMessage() {
-        assertEquals("", logger.getMessage());
+        assertEquals("", tstLogger.getMessage());
     }
 
     @Test
@@ -41,7 +42,7 @@ class LoggerSpec {
     @Test
     @DisplayName("Logger has message when called to log")
     void loggerHasMessageWhenCallToLog() {
-        logger.log("test");
+        ServerLog.log("test");
         assertEquals("test", logger.getMessage());
     }
 
@@ -49,8 +50,8 @@ class LoggerSpec {
     @DisplayName("Observers notified when log is called")
     void observersNotifiedOnCallToLog() {
         changePrintStream();
-        LogToConsole observer = new LogToConsole(logger);
-        logger.log("test");
+        LogToConsole observer = new LogToConsole(tstLogger);
+        tstLogger.log("test");
         String str = consoleOut.toString();
         assertEquals("test\n", str);
         restorePrintStream();
@@ -63,4 +64,16 @@ class LoggerSpec {
     private void restorePrintStream() {
         System.setOut(systemOut);
     }
+
+    @Test
+    @DisplayName("Removing observer decreases observers by one")
+    void removingObserversDecreaseObserversByOne() {
+        LogToConsole console1 = new LogToConsole(logger);
+        LogToConsole console2 = new LogToConsole(logger);
+        int size = logger.getObservers().size();
+        logger.removeObserver(console1);
+        assertEquals(size - 1, logger.getObservers().size());
+    }
+
+    // add test to check for and prevent duplicate observers
 }
