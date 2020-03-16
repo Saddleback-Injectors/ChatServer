@@ -29,7 +29,7 @@ public class Logger implements LogSubject {
         }
     }
 
-    public void log(String msg) {
+    public synchronized void log(String msg) {
         message = msg;
         notifyObservers();
     }
