@@ -17,13 +17,25 @@ public class ClientConnection implements Runnable {
     private Socket socket;
     private List<String> channels;
     private BlockingQueue<Packet> messages;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     private String username;
+
+    private void createIOStreams() {
+        try {
+            this.in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            this.out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public ClientConnection(Socket socket, BlockingQueue<Packet> messages) {
         this.socket = socket;
         this.channels = null;
         this.messages = messages;
         this.username = "";
+        createIOStreams();
     }
 
     @Override
@@ -32,7 +44,7 @@ public class ClientConnection implements Runnable {
         // propagate the message to the publisher
         boolean connected = true;
         try {
-            ObjectInputStream in = getInputSteam();
+            //ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
             while (connected) {
                 Packet packet = (Packet) in.readObject();
                 // move this inside of delegate message
@@ -55,12 +67,17 @@ public class ClientConnection implements Runnable {
             register((RegMessage)data);
             // add a notification message since we don't
             // want another client to have direct access to registeration
-
-            // this is temporary for testing
-            String joinMsg = username + " had joined";
-            messages.add(new Packet("Text-Message", new TextMessage("A", joinMsg)));
+            notifyAllChannels();
         } else if (data instanceof TextMessage) {
             messages.add(packet);
+        }
+    }
+
+    private void notifyAllChannels() {
+        // this is temporary for testing
+        for (String c : channels) {
+            String joinMsg = username + " has joined " + c;
+            messages.add(new Packet("Text-Message", new TextMessage(c, joinMsg)));
         }
     }
 
@@ -72,26 +89,17 @@ public class ClientConnection implements Runnable {
    /**
     * TODO how to prevent multiple threads trying to write to output stream
     */
-    public OutputStream getOutputStream() {
-        try {
-            return socket.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public ObjectOutputStream getOutputStream() {
+        return out;
     }
 
-    public ObjectInputStream getInputSteam() {
-        try {
-            return new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public InputStream getInputSteam() {
+        return in;
     }
 
     /**
-     * TODO return a copy of the channels listening but not direct access
+     * TODO return a copy of the channels listening but not direct access,
+     * need to make this immutable
      */
     public List<String> getChannelsListening() { return channels; }
 }
