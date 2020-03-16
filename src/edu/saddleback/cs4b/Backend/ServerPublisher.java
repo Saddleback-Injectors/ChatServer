@@ -1,6 +1,7 @@
 package edu.saddleback.cs4b.Backend;
 
-import java.io.BufferedOutputStream;
+import edu.saddleback.cs4b.Backend.Messages.TextMessage;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
@@ -38,13 +39,32 @@ public class ServerPublisher implements Runnable {
         ObjectOutputStream out = null;
         for (ClientConnection c : clients) {
             try {
-                out = new ObjectOutputStream(new BufferedOutputStream(c.getOutputStream()));
-                out.writeObject(packet);
-                out.flush();
-                out.reset();
+                // need a better way to get the message for now temporary
+                String channel = ((TextMessage)packet.getData()).getChannel();
+                if (isSubscriber(c, channel)) {
+                    out = c.getOutputStream();
+                    out.writeObject(packet);
+                    out.flush();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * for each client connected, checks if the client is a subscriber
+     * to the channel in which the message is being sent too
+     */
+    private boolean isSubscriber(ClientConnection client, String channel) {
+        // try to make this more efficient later
+        // todo make sure this become a copy not a refereence
+        List<String> channels = client.getChannelsListening();
+        for (String c : channels) {
+            if (c.equals(channel)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
