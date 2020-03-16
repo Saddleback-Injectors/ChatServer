@@ -4,26 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Logger implements LogSubject {
-    private List<String> errorMessages;
+    private String message;
     private List<LogObserver> observers;
 
     public Logger() {
-        this.errorMessages = new ArrayList<>();
+        this.message = "";
         this.observers = new ArrayList<>();
     }
 
     @Override
     public void registerObserver(LogObserver o) {
-
+        observers.add(o);
     }
 
     @Override
     public void removeObserver(LogObserver o) {
-
+        observers.remove(o);
     }
 
     @Override
     public void notifyObservers() {
+        for (LogObserver o : observers) {
+            o.update(message);
+        }
+    }
 
+    public void log(String msg) {
+        message = msg;
+        notifyObservers();
     }
 }
