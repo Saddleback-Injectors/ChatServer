@@ -1,6 +1,6 @@
 package edu.saddleback.cs4b.Backend.Logging;
 
-public class LogToConsole implements LogObserver, LogDisplayable {
+public class LogToConsole implements LogObserver, LogPrintable {
     private LogSubject logger;
     private String logMessage;
 
@@ -11,12 +11,13 @@ public class LogToConsole implements LogObserver, LogDisplayable {
     }
 
     @Override
-    public void display() {
-
+    public void printLog() {
+        System.out.println(logMessage);
     }
 
     @Override
-    public void update(String error) {
-
+    public void update(String msg) {
+        logMessage = msg;
+        printLog();
     }
 }
