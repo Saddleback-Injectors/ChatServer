@@ -33,4 +33,7 @@ public class Logger implements LogSubject {
         message = msg;
         notifyObservers();
     }
+
+    List<LogObserver> getObservers() { return observers; }
+    String getMessage() { return message; }
 }
