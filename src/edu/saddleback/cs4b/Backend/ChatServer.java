@@ -1,8 +1,13 @@
 package edu.saddleback.cs4b.Backend;
 
+import edu.saddleback.cs4b.Backend.Logging.ServerLog;
+import edu.saddleback.cs4b.Backend.Logging.LogToConsole;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -37,15 +42,26 @@ public class ChatServer {
                 clients.add(clientConnect);
                 worker = new Thread(clientConnect);
                 worker.start();
+                logNewUsers();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private void logNewUsers() {
+        String time = LocalTime.now().getHour() + ":" +
+                      LocalTime.now().getMinute() + ":" +
+                      LocalTime.now().getSecond();
+        ServerLog.log(time + " : new user connected");
+    }
+
     public static void main(String[] args) {
         // will temporarily run the server, later done through
         // our Main class
+        new Thread(()-> {
+            LogToConsole consoleLog = new LogToConsole(ServerLog.getLogger());
+        }).start();
         new ChatServer().turnOn();
     }
 }
