@@ -1,5 +1,6 @@
 package edu.saddleback.cs4b.Backend;
 
+import edu.saddleback.cs4b.Backend.Logging.ServerLog;
 import edu.saddleback.cs4b.Backend.Messages.BaseMessage;
 import edu.saddleback.cs4b.Backend.Messages.DisconnectMessage;
 import edu.saddleback.cs4b.Backend.Messages.RegMessage;
@@ -7,6 +8,7 @@ import edu.saddleback.cs4b.Backend.Messages.TextMessage;
 
 import java.io.*;
 import java.net.Socket;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
@@ -52,6 +54,7 @@ public class ClientConnection implements Runnable {
             }
         } catch (EOFException eof) {
             connected = false;
+            logDisconnection();
             BaseMessage disconnect = new DisconnectMessage(username, this);
             delegateMsg(new Packet(disconnect.getType(), disconnect));
         } catch (IOException e) {
@@ -59,6 +62,13 @@ public class ClientConnection implements Runnable {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void logDisconnection() {
+        String time = LocalTime.now().getHour() + ":" +
+                LocalTime.now().getMinute() + ":" +
+                LocalTime.now().getSecond();
+        ServerLog.log(time + " : user has left");
     }
 
     private void delegateMsg(Packet packet) {

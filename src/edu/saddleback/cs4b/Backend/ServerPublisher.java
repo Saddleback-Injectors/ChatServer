@@ -39,10 +39,6 @@ public class ServerPublisher implements Runnable {
         }
     }
 
-    /**
-     *Todo is it ineffective to create new output streams everytime?
-     * was not working the old way
-     */
     private void distribute(Packet packet) {
         ObjectOutputStream out = null;
         for (ClientConnection c : clients) {
