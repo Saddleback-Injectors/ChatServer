@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.Socket;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
@@ -85,12 +87,34 @@ public class ClientConnection implements Runnable {
             notifyAllChannels(username + " has left");
         } else if (data instanceof UpdateMessage) {
             // check the diff's and send out necessary notifications
+            updateAndNotify((UpdateMessage)data);
+        }
+    }
 
+    private void updateAndNotify(UpdateMessage msg) {
+        List<String> updatedChannels = msg.getUpdatedChannels();
+        for (String chan : updatedChannels) {
+            if (!channels.contains(chan)) {
+                // a channel has been added
+                String joinMsg = username + " has joined " + chan;
+                channels.add(chan);
+                messages.add(new Packet("Text-Message", new TextMessage(username, chan, joinMsg)));
+            }
+        }
+
+        // O(n^2) until we change channels to a set
+        Iterator<String> iterator = channels.iterator();
+        while (iterator.hasNext()) {
+            String chan = iterator.next();
+            if (!updatedChannels.contains(chan)) {
+                String leaveMsg = username + " has left " + chan;
+                iterator.remove();
+                messages.add(new Packet("Text-Message", new TextMessage(username, chan, leaveMsg)));
+            }
         }
     }
 
     private void notifyAllChannels(String message) {
-        // this is temporary for testing
         for (String c : channels) {
             String joinMsg = message + " " + c;
             messages.add(new Packet("Text-Message", new TextMessage(username, c, joinMsg)));
@@ -105,13 +129,9 @@ public class ClientConnection implements Runnable {
    /**
     * TODO how to prevent multiple threads trying to write to output stream
     */
-    public ObjectOutputStream getOutputStream() {
-        return out;
-    }
+    public ObjectOutputStream getOutputStream() { return out; }
 
-    public InputStream getInputSteam() {
-        return in;
-    }
+    public InputStream getInputSteam() { return in; }
 
     /**
      * TODO return a copy of the channels listening but not direct access,
