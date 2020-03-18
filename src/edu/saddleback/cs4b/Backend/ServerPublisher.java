@@ -2,6 +2,7 @@ package edu.saddleback.cs4b.Backend;
 
 import edu.saddleback.cs4b.Backend.Messages.BaseMessage;
 import edu.saddleback.cs4b.Backend.Messages.DisconnectMessage;
+import edu.saddleback.cs4b.Backend.Messages.PicMessage;
 import edu.saddleback.cs4b.Backend.Messages.TextMessage;
 
 import java.io.IOException;
@@ -55,6 +56,22 @@ public class ServerPublisher implements Runnable {
             }
         }
     }
+
+    /**
+     * Todo how do we handle, exception, empty string...if no channel nothing
+     * to check... you could add an interface called channable or something
+     * like that
+     */
+    private String getChannel(Packet packet) {
+        BaseMessage msg = (BaseMessage)packet.getData();
+        if (msg instanceof TextMessage) {
+            return ((TextMessage) msg).getChannel();
+        } else if (msg instanceof PicMessage) {
+            return ((PicMessage) msg).getChannel();
+        }
+        return "";
+    }
+
 
     /**
      * for each client connected, checks if the client is a subscriber
