@@ -45,7 +45,7 @@ public class ServerPublisher implements Runnable {
         for (ClientConnection c : clients) {
             try {
                 // need a better way to get the message for now temporary
-                String channel = ((TextMessage)packet.getData()).getChannel();
+                String channel = getChannel(packet);
                 if (c != null && isSubscriber(c, channel)) {
                     out = c.getOutputStream();
                     out.writeObject(packet);

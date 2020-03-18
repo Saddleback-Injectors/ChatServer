@@ -1,10 +1,7 @@
 package edu.saddleback.cs4b.Backend;
 
 import edu.saddleback.cs4b.Backend.Logging.ServerLog;
-import edu.saddleback.cs4b.Backend.Messages.BaseMessage;
-import edu.saddleback.cs4b.Backend.Messages.DisconnectMessage;
-import edu.saddleback.cs4b.Backend.Messages.RegMessage;
-import edu.saddleback.cs4b.Backend.Messages.TextMessage;
+import edu.saddleback.cs4b.Backend.Messages.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -79,7 +76,8 @@ public class ClientConnection implements Runnable {
             // add a notification message since we don't
             // want another client to have direct access to registeration
             notifyAllChannels(username + " has joined");
-        } else if (data instanceof TextMessage) {
+        } else if (data instanceof TextMessage ||
+                   data instanceof PicMessage) {
             messages.add(packet);
         } else if (data instanceof DisconnectMessage) {
             messages.add(packet);
