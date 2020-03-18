@@ -6,7 +6,8 @@ import edu.saddleback.cs4b.Backend.Messages.*;
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -15,7 +16,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ClientConnection implements Runnable {
     private Socket socket;
-    private List<String> channels;
+    private Set<String> channels;
     private BlockingQueue<Packet> messages;
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -32,7 +33,7 @@ public class ClientConnection implements Runnable {
 
     public ClientConnection(Socket socket, BlockingQueue<Packet> messages) {
         this.socket = socket;
-        this.channels = null;
+        this.channels = new HashSet<>();
         this.messages = messages;
         this.username = "";
         createIOStreams();
@@ -82,6 +83,9 @@ public class ClientConnection implements Runnable {
         } else if (data instanceof DisconnectMessage) {
             messages.add(packet);
             notifyAllChannels(username + " has left");
+        } else if (data instanceof UpdateMessage) {
+            // check the diff's and send out necessary notifications
+
         }
     }
 
@@ -94,7 +98,7 @@ public class ClientConnection implements Runnable {
     }
 
     private void register(RegMessage message) {
-        channels = message.getChannels();
+        channels.addAll(message.getChannels());
         username = message.getUserName();
     }
 
@@ -113,5 +117,5 @@ public class ClientConnection implements Runnable {
      * TODO return a copy of the channels listening but not direct access,
      * need to make this immutable
      */
-    public List<String> getChannelsListening() { return channels; }
+    public Set<String> getChannelsListening() { return channels; }
 }

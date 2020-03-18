@@ -8,6 +8,7 @@ import edu.saddleback.cs4b.Backend.Messages.TextMessage;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public class ServerPublisher implements Runnable {
@@ -42,10 +43,9 @@ public class ServerPublisher implements Runnable {
 
     private void distribute(Packet packet) {
         ObjectOutputStream out = null;
+        String channel = getChannel(packet);
         for (ClientConnection c : clients) {
             try {
-                // need a better way to get the message for now temporary
-                String channel = getChannel(packet);
                 if (c != null && isSubscriber(c, channel)) {
                     out = c.getOutputStream();
                     out.writeObject(packet);
@@ -80,7 +80,7 @@ public class ServerPublisher implements Runnable {
     private boolean isSubscriber(ClientConnection client, String channel) {
         // try to make this more efficient later
         // todo make sure this become a copy not a refereence
-        List<String> channels = client.getChannelsListening();
+        Set<String> channels = client.getChannelsListening();
         for (String c : channels) {
             if (c.equals(channel)) {
                 return true;
