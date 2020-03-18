@@ -1,5 +1,7 @@
 package edu.saddleback.cs4b.Backend;
 
+import edu.saddleback.cs4b.Backend.Messages.BaseMessage;
+import edu.saddleback.cs4b.Backend.Messages.DisconnectMessage;
 import edu.saddleback.cs4b.Backend.Messages.TextMessage;
 
 import java.io.IOException;
@@ -24,7 +26,13 @@ public class ServerPublisher implements Runnable {
         while (isRunning) {
             try {
                 Packet curPacket = messages.take();
-                distribute(curPacket);
+                BaseMessage msg = (BaseMessage)curPacket.getData();
+                if (msg instanceof DisconnectMessage) {
+                    ClientConnection cc = (ClientConnection)((DisconnectMessage) msg).getClient();
+                    clients.remove(cc);
+                } else {
+                    distribute(curPacket);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -41,7 +49,7 @@ public class ServerPublisher implements Runnable {
             try {
                 // need a better way to get the message for now temporary
                 String channel = ((TextMessage)packet.getData()).getChannel();
-                if (isSubscriber(c, channel)) {
+                if (c != null && isSubscriber(c, channel)) {
                     out = c.getOutputStream();
                     out.writeObject(packet);
                     out.flush();

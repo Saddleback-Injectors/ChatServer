@@ -1,16 +1,17 @@
 package edu.saddleback.cs4b.Backend;
 
+import edu.saddleback.cs4b.Backend.Messages.BaseMessage;
+import edu.saddleback.cs4b.Backend.Messages.DisconnectMessage;
 import edu.saddleback.cs4b.Backend.Messages.RegMessage;
 import edu.saddleback.cs4b.Backend.Messages.TextMessage;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * This class will deligate messages from the client
+ * This class will delegate messages from the client
  * to the server
  */
 public class ClientConnection implements Runnable {
@@ -47,12 +48,12 @@ public class ClientConnection implements Runnable {
             //ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
             while (connected) {
                 Packet packet = (Packet) in.readObject();
-                // move this inside of delegate message
-                //messages.add(packet);
                 delegateMsg(packet);
             }
         } catch (EOFException eof) {
             connected = false;
+            BaseMessage disconnect = new DisconnectMessage(username, this);
+            delegateMsg(new Packet(disconnect.getType(), disconnect));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -67,17 +68,20 @@ public class ClientConnection implements Runnable {
             register((RegMessage)data);
             // add a notification message since we don't
             // want another client to have direct access to registeration
-            notifyAllChannels();
+            notifyAllChannels(username + " has joined");
         } else if (data instanceof TextMessage) {
             messages.add(packet);
+        } else if (data instanceof DisconnectMessage) {
+            messages.add(packet);
+            notifyAllChannels(username + " has left");
         }
     }
 
-    private void notifyAllChannels() {
+    private void notifyAllChannels(String message) {
         // this is temporary for testing
         for (String c : channels) {
-            String joinMsg = username + " has joined " + c;
-            messages.add(new Packet("Text-Message", new TextMessage(c, joinMsg)));
+            String joinMsg = message + " " + c;
+            messages.add(new Packet("Text-Message", new TextMessage(username, c, joinMsg)));
         }
     }
 
