@@ -23,7 +23,7 @@ class LoggerSpec {
     @Test
     @DisplayName("New Log should have empty message")
     void newLogHasEmptyMessage() {
-        assertEquals("", tstLogger.getMessage());
+        assertEquals(null, tstLogger.getEvent());
     }
 
     @Test
@@ -42,7 +42,7 @@ class LoggerSpec {
     @Test
     @DisplayName("Logger has message when called to log")
     void loggerHasMessageWhenCallToLog() {
-        ServerLog.log("test");
+        ServerLog.log(new LogEvent(LogEnum.EVENT_LOG, "test"));
         assertEquals("test", logger.getMessage());
     }
 
@@ -51,7 +51,7 @@ class LoggerSpec {
     void observersNotifiedOnCallToLog() {
         changePrintStream();
         LogToConsole observer = new LogToConsole(tstLogger);
-        tstLogger.log("test");
+        tstLogger.log(new LogEvent(LogEnum.EVENT_LOG, "test"));
         String str = consoleOut.toString();
         assertEquals("test\n", str);
         restorePrintStream();

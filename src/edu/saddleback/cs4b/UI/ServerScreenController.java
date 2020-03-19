@@ -1,5 +1,6 @@
 package edu.saddleback.cs4b.UI;
 
+import edu.saddleback.cs4b.Backend.Logging.LogEvent;
 import edu.saddleback.cs4b.Backend.Logging.LogObserver;
 import edu.saddleback.cs4b.Backend.Logging.LogSubject;
 import edu.saddleback.cs4b.Backend.Logging.ServerLog;
@@ -17,7 +18,7 @@ public class ServerScreenController implements LogObserver {
     }
 
     @Override
-    public void update(String msg) {
-        logScreen.appendText(msg + "\n");
+    public void update(LogEvent event) {
+        logScreen.appendText(event.getMessage() + "\n");
     }
 }

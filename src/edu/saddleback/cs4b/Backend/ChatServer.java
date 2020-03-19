@@ -1,5 +1,7 @@
 package edu.saddleback.cs4b.Backend;
 
+import edu.saddleback.cs4b.Backend.Logging.LogEnum;
+import edu.saddleback.cs4b.Backend.Logging.LogEvent;
 import edu.saddleback.cs4b.Backend.Logging.ServerLog;
 import edu.saddleback.cs4b.Backend.Logging.LogToConsole;
 
@@ -53,7 +55,8 @@ public class ChatServer {
         String time = LocalTime.now().getHour() + ":" +
                       LocalTime.now().getMinute() + ":" +
                       LocalTime.now().getSecond();
-        ServerLog.log(time + " : new user connected");
+        String message = time + " : new user connected";
+        ServerLog.log(new LogEvent(LogEnum.EVENT_LOG, message));
     }
 
     public static void main(String[] args) {

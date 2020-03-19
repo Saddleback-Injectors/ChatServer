@@ -16,8 +16,8 @@ public class LogToConsole implements LogObserver, LogPrintable {
     }
 
     @Override
-    public void update(String msg) {
-        logMessage = msg;
+    public void update(LogEvent event) {
+        logMessage = event.getMessage();
         printLog();
     }
 }

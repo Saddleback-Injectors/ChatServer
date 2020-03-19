@@ -1,5 +1,7 @@
 package edu.saddleback.cs4b.Backend;
 
+import edu.saddleback.cs4b.Backend.Logging.LogEnum;
+import edu.saddleback.cs4b.Backend.Logging.LogEvent;
 import edu.saddleback.cs4b.Backend.Logging.ServerLog;
 import edu.saddleback.cs4b.Backend.Messages.*;
 
@@ -69,7 +71,8 @@ public class ClientConnection implements Runnable {
         String time = LocalTime.now().getHour() + ":" +
                 LocalTime.now().getMinute() + ":" +
                 LocalTime.now().getSecond();
-        ServerLog.log(time + " : user has left");
+        String message = time + " : user has left";
+        ServerLog.log(new LogEvent(LogEnum.EVENT_LOG, message));
     }
 
     private void delegateMsg(Packet packet) {

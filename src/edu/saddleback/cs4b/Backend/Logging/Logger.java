@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Logger implements LogSubject {
-    private String message;
+    private LogEvent event;
     private List<LogObserver> observers;
 
     public Logger() {
-        this.message = "";
+        this.event = null;
         this.observers = new ArrayList<>();
     }
 
@@ -25,15 +25,16 @@ public class Logger implements LogSubject {
     @Override
     public void notifyObservers() {
         for (LogObserver o : observers) {
-            o.update(message);
+            o.update(event);
         }
     }
 
-    public synchronized void log(String msg) {
-        message = msg;
+    public synchronized void log(LogEvent event) {
+        this.event = event;
         notifyObservers();
     }
 
     List<LogObserver> getObservers() { return observers; }
-    String getMessage() { return message; }
+    String getMessage() { return event.getMessage(); }
+    LogEvent getEvent() { return event; }
 }
