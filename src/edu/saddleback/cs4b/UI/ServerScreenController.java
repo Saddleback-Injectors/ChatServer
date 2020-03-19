@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 public class ServerScreenController implements LogObserver {
     private LogSubject logger = ServerLog.getLogger();
     private Thread serverThread = null;
+    private ChatServer chatServer = new ChatServer();
 
     @FXML
     private Button shutdownBtn;
@@ -50,7 +51,7 @@ public class ServerScreenController implements LogObserver {
     void onStartUp() {
         if (serverThread == null) {
             serverThread = new Thread(()-> {
-                new ChatServer().turnOn();
+               chatServer.turnOn();
             });
             serverThread.start();
         }
@@ -61,6 +62,7 @@ public class ServerScreenController implements LogObserver {
         if (e.getSource() == shutdownBtn) {
             Stage s = (Stage)shutdownBtn.getScene().getWindow();
             s.close();
+            chatServer.terminate();
         }
     }
 }

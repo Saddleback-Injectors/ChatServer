@@ -8,6 +8,7 @@ import edu.saddleback.cs4b.Backend.Logging.LogToConsole;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class ChatServer {
     private final List<ClientConnection> clients;
     private final ServerPublisher publisher;
     private final int port = 8000;
+    private ServerSocket server;
 
     public ChatServer() {
         this.channels = new ArrayList<>();
@@ -37,7 +39,7 @@ public class ChatServer {
         ClientConnection clientConnect = null;
         Thread worker = null;
         try {
-            ServerSocket server = new ServerSocket(port);
+            server = new ServerSocket(port);
             ServerLog.log(new LogEvent(LogEnum.PORT, Integer.toString(port)));
             ServerLog.log(new LogEvent(LogEnum.HOST, server.getInetAddress().toString()));
             while (isRunning) {
@@ -48,6 +50,8 @@ public class ChatServer {
                 worker.start();
                 logNewUsers();
             }
+        } catch (SocketException e1) {
+            isRunning = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,6 +63,14 @@ public class ChatServer {
                       LocalTime.now().getSecond();
         String message = time + " : new user connected";
         ServerLog.log(new LogEvent(LogEnum.EVENT_LOG, message));
+    }
+
+    public void terminate() {
+        try {
+            server.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
