@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background-Color" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextArea layoutX="33.0" layoutY="63.0" prefHeight="507.0" prefWidth="340.0" />
+      <TextArea fx:id="logScreen" editable="false" layoutX="33.0" layoutY="63.0" prefHeight="507.0" prefWidth="340.0" />
       <Button layoutX="421.0" layoutY="25.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #6ED890;" stylesheets="@Background.css" text="RUN" textFill="WHITE">
          <font>
             <Font name="Helvetica" size="18.0" />
@@ -25,7 +25,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextArea layoutX="421.0" layoutY="292.0" prefHeight="278.0" prefWidth="340.0" />
+      <TextArea editable="false" layoutX="421.0" layoutY="292.0" prefHeight="278.0" prefWidth="340.0" />
       <Label layoutX="421.0" layoutY="260.0" text="Users Connected:" textFill="WHITE">
          <font>
             <Font size="18.0" />
