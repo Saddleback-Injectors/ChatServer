@@ -7,6 +7,9 @@ import edu.saddleback.cs4b.Backend.Logging.ServerLog;
 public class ServerScreenController implements LogObserver {
     private LogSubject logger = ServerLog.getLogger();
 
+    ServerScreenController() {
+        logger.registerObserver(this);
+    }
 
     @Override
     public void update(String msg) {
