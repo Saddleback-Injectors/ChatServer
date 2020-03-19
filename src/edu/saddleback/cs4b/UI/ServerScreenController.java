@@ -1,5 +1,6 @@
 package edu.saddleback.cs4b.UI;
 
+import edu.saddleback.cs4b.Backend.ChatServer;
 import edu.saddleback.cs4b.Backend.Logging.*;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextArea;
 
 public class ServerScreenController implements LogObserver {
     private LogSubject logger = ServerLog.getLogger();
+    private Thread serverThread = null;
 
     @FXML
     private Label portField;
@@ -41,7 +43,12 @@ public class ServerScreenController implements LogObserver {
 
     @FXML
     void onStartUp() {
-        
+        if (serverThread == null) {
+            serverThread = new Thread(()-> {
+                new ChatServer().turnOn();
+            });
+            serverThread.start();
+        }
     }
 
     @FXML
