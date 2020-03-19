@@ -2,7 +2,7 @@ package edu.saddleback.cs4b.Backend.Logging;
 
 public enum LogEnum {
     EVENT_LOG("Event-Log"),
-    USER_ACTION("User-Action"),
+    USERS("Users"),
     HOST("HostIP"),
     PORT("Port#");
 

@@ -128,6 +128,7 @@ public class ClientConnection implements Runnable {
     private void register(RegMessage message) {
         channels.addAll(message.getChannels());
         username = message.getUserName();
+        ServerLog.log(new LogEvent(LogEnum.USERS, username));
     }
 
    /**
