@@ -9,18 +9,18 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background-Color" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextArea layoutX="33.0" layoutY="292.0" prefHeight="278.0" prefWidth="340.0" />
-      <Button layoutX="33.0" layoutY="27.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #6ED890;" stylesheets="@Background.css" text="RUN" textFill="WHITE">
+      <TextArea layoutX="33.0" layoutY="63.0" prefHeight="507.0" prefWidth="340.0" />
+      <Button layoutX="421.0" layoutY="25.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #6ED890;" stylesheets="@Background.css" text="RUN" textFill="WHITE">
          <font>
             <Font name="Helvetica" size="18.0" />
          </font>
       </Button>
-      <Button layoutX="36.0" layoutY="77.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #FF0000;" stylesheets="@Background.css" text="SHUTDOWN" textFill="WHITE">
+      <Button layoutX="421.0" layoutY="78.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #FF0000;" stylesheets="@Background.css" text="SHUTDOWN" textFill="WHITE">
          <font>
             <Font name="Helvetica" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="33.0" layoutY="260.0" text="Event Log:" textFill="WHITE">
+      <Label layoutX="33.0" layoutY="30.0" text="Event Log:" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
@@ -31,23 +31,17 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="33.0" layoutY="141.0" text="Host IP:" textFill="WHITE">
+      <Label layoutX="421.0" layoutY="141.0" text="Host IP:" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="37.0" layoutY="191.0" text="Port #:" textFill="WHITE">
+      <Label layoutX="421.0" layoutY="191.0" text="Port #:" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextArea layoutX="421.0" layoutY="60.0" prefHeight="155.0" prefWidth="340.0" />
-      <Label layoutX="421.0" layoutY="32.0" text="Chat Messages:" textFill="WHITE">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField layoutX="111.0" layoutY="138.0" />
-      <TextField layoutX="111.0" layoutY="188.0" />
+      <TextField layoutX="496.0" layoutY="138.0" prefHeight="29.0" prefWidth="265.0" />
+      <TextField layoutX="496.0" layoutY="188.0" prefHeight="29.0" prefWidth="265.0" />
    </children>
 </AnchorPane>
