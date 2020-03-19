@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background-Color" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="edu.saddleback.cs4b.UI.ServerScreenController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background-Color" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextArea fx:id="logScreen" editable="false" layoutX="33.0" layoutY="63.0" prefHeight="507.0" prefWidth="340.0" />
       <Button layoutX="421.0" layoutY="25.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #6ED890;" stylesheets="@Background.css" text="RUN" textFill="WHITE">

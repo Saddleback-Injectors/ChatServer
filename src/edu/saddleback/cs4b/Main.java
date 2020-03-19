@@ -1,6 +1,8 @@
 package edu.saddleback.cs4b;
 
 import edu.saddleback.cs4b.Backend.ChatServer;
+import edu.saddleback.cs4b.Backend.Logging.LogToConsole;
+import edu.saddleback.cs4b.Backend.Logging.ServerLog;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,8 +19,12 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        new Thread(()-> {
+            LogToConsole consoleLog = new LogToConsole(ServerLog.getLogger());
+        }).start();
+        new Thread(()-> {
+            new ChatServer().turnOn();
+        }).start();
         launch(args);
-        ChatServer server = new ChatServer();
-        server.turnOn();
     }
 }

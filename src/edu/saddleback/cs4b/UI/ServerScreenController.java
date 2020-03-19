@@ -12,12 +12,12 @@ public class ServerScreenController implements LogObserver {
     @FXML
     private TextArea logScreen;
 
-    ServerScreenController() {
+    public ServerScreenController() {
         logger.registerObserver(this);
     }
 
     @Override
     public void update(String msg) {
-
+        logScreen.appendText(msg + "\n");
     }
 }
