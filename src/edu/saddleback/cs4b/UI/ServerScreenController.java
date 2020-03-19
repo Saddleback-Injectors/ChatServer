@@ -1,4 +1,15 @@
 package edu.saddleback.cs4b.UI;
 
-public class ServerScreenController {
+import edu.saddleback.cs4b.Backend.Logging.LogObserver;
+import edu.saddleback.cs4b.Backend.Logging.LogSubject;
+import edu.saddleback.cs4b.Backend.Logging.ServerLog;
+
+public class ServerScreenController implements LogObserver {
+    private LogSubject logger = ServerLog.getLogger();
+
+
+    @Override
+    public void update(String msg) {
+
+    }
 }
