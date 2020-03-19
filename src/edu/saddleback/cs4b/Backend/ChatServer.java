@@ -38,6 +38,8 @@ public class ChatServer {
         Thread worker = null;
         try {
             ServerSocket server = new ServerSocket(port);
+            ServerLog.log(new LogEvent(LogEnum.PORT, Integer.toString(port)));
+            ServerLog.log(new LogEvent(LogEnum.HOST, server.getInetAddress().toString()));
             while (isRunning) {
                 client = server.accept();
                 clientConnect = new ClientConnection(client, messages);

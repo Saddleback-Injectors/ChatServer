@@ -3,9 +3,15 @@ package edu.saddleback.cs4b.UI;
 import edu.saddleback.cs4b.Backend.Logging.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class ServerScreenController implements LogObserver {
     private LogSubject logger = ServerLog.getLogger();
+
+    
+
+    @FXML
+    private TextField hostField;
 
     @FXML
     private TextArea userConnection;
@@ -23,6 +29,10 @@ public class ServerScreenController implements LogObserver {
             logScreen.appendText(event.getMessage() + "\n");
         } else if (event.getEventType().equals(LogEnum.USERS.getType())) {
             userConnection.appendText(event.getMessage() + "\n");
+        } else if (event.getEventType().equals(LogEnum.HOST.getType())) {
+            hostField.setText(event.getMessage());
+        } else if (event.getEventType().equals(LogEnum.PORT.getType()) {
+
         }
     }
 }
