@@ -22,9 +22,6 @@ public class Main extends Application {
         new Thread(()-> {
             LogToConsole consoleLog = new LogToConsole(ServerLog.getLogger());
         }).start();
-        new Thread(()-> {
-            new ChatServer().turnOn();
-        }).start();
         launch(args);
     }
 }
