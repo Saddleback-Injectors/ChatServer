@@ -5,12 +5,17 @@ import edu.saddleback.cs4b.Backend.Logging.*;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 
 public class ServerScreenController implements LogObserver {
     private LogSubject logger = ServerLog.getLogger();
     private Thread serverThread = null;
+
+    @FXML
+    private Button shutdownBtn;
 
     @FXML
     private Label portField;
@@ -53,7 +58,9 @@ public class ServerScreenController implements LogObserver {
 
     @FXML
     void onShutDown(Event e) {
-
+        if (e.getSource() == shutdownBtn) {
+            Stage s = (Stage)shutdownBtn.getScene().getWindow();
+            s.close();
+        }
     }
-
 }

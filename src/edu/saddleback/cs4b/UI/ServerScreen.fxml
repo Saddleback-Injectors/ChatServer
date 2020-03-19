@@ -15,7 +15,7 @@
             <Font name="Helvetica" size="18.0" />
          </font>
       </Button>
-      <Button layoutX="421.0" layoutY="78.0" mnemonicParsing="false" onAction="#onShutDown" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #FF0000;" stylesheets="@Background.css" text="SHUTDOWN" textFill="WHITE">
+      <Button fx:id="shutdownBtn" layoutX="421.0" layoutY="78.0" mnemonicParsing="false" onAction="#onShutDown" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #FF0000;" stylesheets="@Background.css" text="SHUTDOWN" textFill="WHITE">
          <font>
             <Font name="Helvetica" size="18.0" />
          </font>
