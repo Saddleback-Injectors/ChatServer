@@ -1,6 +1,9 @@
 package edu.saddleback.cs4b.Backend;
 
 import edu.saddleback.cs4b.Backend.Messages.DisconnectMessage;
+import edu.saddleback.cs4b.Backend.Messages.PicMessage;
+import edu.saddleback.cs4b.Backend.Messages.RegMessage;
+import edu.saddleback.cs4b.Backend.Messages.TextMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,11 +30,14 @@ class ServerPublisherTest {
     }
 
     @Test
-    void disconnectMethodHasNoChannel() {
+    void disconnectMessageHasNoChannel() {
         String ch = pub.getChannel(new Packet("", new DisconnectMessage( "" , cc)));
         assertEquals("", ch);
     }
 
-    
-
+    @Test
+    void regMessageHasNoChannel() {
+        String ch = pub.getChannel(new Packet("", new RegMessage( "" , "", null)));
+        assertEquals("", ch);
+    }
 }
