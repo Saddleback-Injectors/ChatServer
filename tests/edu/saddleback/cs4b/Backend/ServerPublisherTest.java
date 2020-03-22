@@ -48,4 +48,12 @@ class ServerPublisherTest {
         assertEquals("A", ch);
         assertEquals("B", ch2);
     }
+
+    @Test
+    void clientWhoSubscribeToAChannelComesBackTrue() {
+        channels.add("A");
+        channels.add("C");
+        assertTrue(pub.isSubscriber(cc, "A"));
+        assertTrue(pub.isSubscriber(cc,"C"));
+    }
 }
