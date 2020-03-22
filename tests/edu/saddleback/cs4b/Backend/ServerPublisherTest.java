@@ -58,7 +58,14 @@ class ServerPublisherTest {
     }
 
     @Test
-    void clientWhoIsNotSubscribedWillComeBackFalse() {
+    void clientWhoFollowsNoChannelsIsNotSubscriber() {
         assertFalse(pub.isSubscriber(cc, "A"));
+    }
+
+    @Test
+    void clientWhoDoesntFollowBisNotSubsriber() {
+        channels.add("A");
+        channels.add("C");
+        assertFalse(pub.isSubscriber(cc, "B"));
     }
 }
