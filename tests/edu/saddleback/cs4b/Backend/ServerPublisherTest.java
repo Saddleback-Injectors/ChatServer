@@ -56,4 +56,9 @@ class ServerPublisherTest {
         assertTrue(pub.isSubscriber(cc, "A"));
         assertTrue(pub.isSubscriber(cc,"C"));
     }
+
+    @Test
+    void clientWhoIsNotSubscribedWillComeBackFalse() {
+        assertFalse(pub.isSubscriber(cc, "A"));
+    }
 }
