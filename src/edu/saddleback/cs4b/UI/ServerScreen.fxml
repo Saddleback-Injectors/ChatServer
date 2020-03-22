@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background-Color" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background-Color" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.saddleback.cs4b.UI.ServerScreenController">
    <children>
-      <TextArea layoutX="33.0" layoutY="63.0" prefHeight="507.0" prefWidth="340.0" />
-      <Button layoutX="421.0" layoutY="25.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #6ED890;" stylesheets="@Background.css" text="RUN" textFill="WHITE">
+      <TextArea fx:id="logScreen" editable="false" layoutX="33.0" layoutY="63.0" prefHeight="507.0" prefWidth="340.0" />
+      <Button layoutX="421.0" layoutY="25.0" mnemonicParsing="false" onAction="#onStartUp" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #6ED890;" stylesheets="@Background.css" text="RUN" textFill="WHITE">
          <font>
             <Font name="Helvetica" size="18.0" />
          </font>
       </Button>
-      <Button layoutX="421.0" layoutY="78.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #FF0000;" stylesheets="@Background.css" text="SHUTDOWN" textFill="WHITE">
+      <Button fx:id="shutdownBtn" layoutX="421.0" layoutY="78.0" mnemonicParsing="false" onAction="#onShutDown" prefHeight="33.0" prefWidth="340.0" style="-fx-background-color: #2A363B#2A363B; -fx-background-color: #FF0000;" stylesheets="@Background.css" text="SHUTDOWN" textFill="WHITE">
          <font>
             <Font name="Helvetica" size="18.0" />
          </font>
@@ -25,8 +25,8 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextArea layoutX="421.0" layoutY="292.0" prefHeight="278.0" prefWidth="340.0" />
-      <Label layoutX="421.0" layoutY="260.0" text="Users Connected:" textFill="WHITE">
+      <TextArea fx:id="userConnection" editable="false" layoutX="421.0" layoutY="292.0" prefHeight="278.0" prefWidth="340.0" />
+      <Label layoutX="421.0" layoutY="260.0" text="Connection History:" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
@@ -41,7 +41,9 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField layoutX="496.0" layoutY="138.0" prefHeight="29.0" prefWidth="265.0" />
       <TextField layoutX="496.0" layoutY="188.0" prefHeight="29.0" prefWidth="265.0" />
+      <TextField editable="false" layoutX="493.0" layoutY="138.0" prefHeight="29.0" prefWidth="265.0" />
+      <Label fx:id="hostField" layoutX="497.0" layoutY="136.0" prefHeight="33.0" prefWidth="258.0" />
+      <Label fx:id="portField" layoutX="497.0" layoutY="186.0" prefHeight="33.0" prefWidth="258.0" />
    </children>
 </AnchorPane>
