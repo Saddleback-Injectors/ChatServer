@@ -62,7 +62,7 @@ public class ServerPublisher implements Runnable {
      * to check... you could add an interface called channable or something
      * like that
      */
-    private String getChannel(Packet packet) {
+    String getChannel(Packet packet) {
         BaseMessage msg = (BaseMessage)packet.getData();
         if (msg instanceof TextMessage) {
             return ((TextMessage) msg).getChannel();
@@ -77,7 +77,7 @@ public class ServerPublisher implements Runnable {
      * for each client connected, checks if the client is a subscriber
      * to the channel in which the message is being sent too
      */
-    private boolean isSubscriber(ClientConnection client, String channel) {
+    boolean isSubscriber(ClientConnection client, String channel) {
         // try to make this more efficient later
         // todo make sure this become a copy not a refereence
         Set<String> channels = client.getChannelsListening();
