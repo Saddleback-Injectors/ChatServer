@@ -44,6 +44,13 @@ public class ClientConnection implements Runnable {
         createIOStreams();
     }
 
+    /**
+     * for purpose of testing ONLY
+     */
+    ClientConnection(Set<String> channels) {
+        this.channels = channels;
+    }
+
     @Override
     public void run() {
         // listen for messages from client until disconnect
