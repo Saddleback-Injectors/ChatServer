@@ -40,4 +40,12 @@ class ServerPublisherTest {
         String ch = pub.getChannel(new Packet("", new RegMessage( "" , "", null)));
         assertEquals("", ch);
     }
+
+    @Test
+    void messagesThatSupportChannelsWillReportChannel() {
+        String ch = pub.getChannel(new Packet("", new TextMessage("", "A", "")));
+        String ch2 = pub.getChannel(new Packet("", new PicMessage("",  null, "B")));
+        assertEquals("A", ch);
+        assertEquals("B", ch2);
+    }
 }
