@@ -4,6 +4,7 @@ import edu.saddleback.cs4b.Backend.Logging.LogEnum;
 import edu.saddleback.cs4b.Backend.Logging.LogEvent;
 import edu.saddleback.cs4b.Backend.Logging.ServerLog;
 import edu.saddleback.cs4b.Backend.Logging.LogToConsole;
+import edu.saddleback.cs4b.Backend.Messages.ServerTermination;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -68,6 +69,7 @@ public class ChatServer {
     public void terminate() {
         try {
             server.close();
+            messages.add(new Packet("Termination", new ServerTermination()));
         } catch (IOException e) {
             e.printStackTrace();
         }
