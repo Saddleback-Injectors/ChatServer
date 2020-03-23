@@ -1,9 +1,6 @@
 package edu.saddleback.cs4b.Backend;
 
-import edu.saddleback.cs4b.Backend.Messages.BaseMessage;
-import edu.saddleback.cs4b.Backend.Messages.DisconnectMessage;
-import edu.saddleback.cs4b.Backend.Messages.PicMessage;
-import edu.saddleback.cs4b.Backend.Messages.TextMessage;
+import edu.saddleback.cs4b.Backend.Messages.*;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -35,6 +32,8 @@ public class ServerPublisher implements Runnable {
                     ObjectOutputStream os = cc.getOutputStream();
                     os.writeObject(new Packet("Disconnect", new DisconnectMessage(null)));
                     os.flush();
+                } else if (msg instanceof ServerTermination) {
+                    isRunning = false;
                 } else {
                     distribute(curPacket);
                 }
