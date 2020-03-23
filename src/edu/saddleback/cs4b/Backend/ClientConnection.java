@@ -94,7 +94,8 @@ public class ClientConnection implements Runnable {
                    data instanceof PicMessage) {
             messages.add(packet);
         } else if (data instanceof DisconnectMessage) {
-            messages.add(packet);
+            DisconnectMessage discon = new DisconnectMessage(username, this);
+            messages.add(new Packet(discon.getType(), discon));
             notifyAllChannels(username + " has left");
         } else if (data instanceof UpdateMessage) {
             // check the diff's and send out necessary notifications

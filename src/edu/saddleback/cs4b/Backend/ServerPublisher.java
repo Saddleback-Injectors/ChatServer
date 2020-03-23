@@ -32,11 +32,16 @@ public class ServerPublisher implements Runnable {
                 if (msg instanceof DisconnectMessage) {
                     ClientConnection cc = (ClientConnection)((DisconnectMessage) msg).getClient();
                     clients.remove(cc);
+                    ObjectOutputStream os = cc.getOutputStream();
+                    os.writeObject(new Packet("Disconnect", new DisconnectMessage(null)));
+                    os.flush();
                 } else {
                     distribute(curPacket);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
             }
         }
     }
