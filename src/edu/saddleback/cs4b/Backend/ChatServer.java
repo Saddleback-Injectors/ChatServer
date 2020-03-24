@@ -7,11 +7,11 @@ import edu.saddleback.cs4b.Backend.Logging.LogToConsole;
 import edu.saddleback.cs4b.Backend.Messages.ServerTermination;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -42,7 +42,7 @@ public class ChatServer {
         try {
             server = new ServerSocket(port);
             ServerLog.log(new LogEvent(LogEnum.PORT, Integer.toString(port)));
-            ServerLog.log(new LogEvent(LogEnum.HOST, server.getInetAddress().toString()));
+            ServerLog.log(new LogEvent(LogEnum.HOST, InetAddress.getLocalHost().getHostAddress()));
             while (isRunning) {
                 client = server.accept();
                 clientConnect = new ClientConnection(client, messages);
