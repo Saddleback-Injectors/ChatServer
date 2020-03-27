@@ -2,6 +2,8 @@ package edu.saddleback.cs4b.Backend;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,6 +36,19 @@ public class History implements Serializable {
         this.fileData = fileData;
     }
 
+    /**
+     * @return text log that cannot be modified, to add, add directly
+     * via the object, you cannot remove
+     */
+    public List<String> getTextLog() {
+        return Collections.unmodifiableList(textLog);
+    }
 
+    /**
+     * @return copy of the data being stored
+     */
+    public byte[] getFileData() {
+        return Arrays.copyOf(fileData, fileData.length);
+    }
 
 }
