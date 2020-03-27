@@ -5,18 +5,22 @@ import edu.saddleback.cs4b.Backend.Messages.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public class ServerPublisher implements Runnable {
     private List<ClientConnection> clients;
     private BlockingQueue<Packet> messages;
+    private final Map<String, History> historyMap;
     private boolean isRunning;
 
     ServerPublisher(List<ClientConnection> clients,
-                    BlockingQueue<Packet> messages) {
+                    BlockingQueue<Packet> messages,
+                    Map<String, History> historyMap) {
         this.clients = clients;
         this.messages = messages;
+        this.historyMap = historyMap;
         this.isRunning = true;
     }
 
@@ -35,6 +39,13 @@ public class ServerPublisher implements Runnable {
                 } else if (msg instanceof ServerTermination) {
                     isRunning = false;
                 } else {
+                    String msgChannel = getChannel(curPacket);
+                    if (!historyMap.containsKey(msgChannel)) {
+                        historyMap.put(msgChannel, new History());
+                    }
+                    logHistory(msgChannel, curPacket);
+                    // right now this method only invoked for
+                    // picture and text messages
                     distribute(curPacket);
                 }
             } catch (InterruptedException e) {
@@ -42,6 +53,16 @@ public class ServerPublisher implements Runnable {
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
+        }
+    }
+
+    private void logHistory(String channel, Packet curPacket) {
+        if (curPacket.getData() instanceof TextMessage) {
+            TextMessage txt = (TextMessage)curPacket.getData();
+            historyMap.get(channel).logText(txt.getMessage());
+        } else if (curPacket.getData() instanceof PicMessage) {
+            PicMessage pic = (PicMessage)curPacket.getData();
+            historyMap.get(channel).addFileData(pic.getImg());
         }
     }
 
