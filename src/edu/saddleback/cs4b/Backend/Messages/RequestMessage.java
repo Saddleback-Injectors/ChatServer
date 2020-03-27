@@ -23,6 +23,4 @@ public class RequestMessage extends BaseMessage {
     public RequestMessage(String sender, RequestType requestType, String channel) {
         this(sender, requestType.getType(), requestType, channel, null);
     }
-
-    
 }
