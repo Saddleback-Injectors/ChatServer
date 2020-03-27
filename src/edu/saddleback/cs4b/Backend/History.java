@@ -1,5 +1,7 @@
 package edu.saddleback.cs4b.Backend;
 
+import edu.saddleback.cs4b.Backend.Interfaces.Requestable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +16,7 @@ import java.util.List;
  *
  *     todo come back and address if a History object should be cloneable
  */
-public class History implements Serializable {
+public class History implements Requestable {
     private List<String> textLog;
     private byte[] fileData;
 
@@ -23,7 +25,7 @@ public class History implements Serializable {
         this.fileData = fileData;
     }
 
-    History() {
+    public History() {
        this (new ArrayList<>(), null);
     }
 

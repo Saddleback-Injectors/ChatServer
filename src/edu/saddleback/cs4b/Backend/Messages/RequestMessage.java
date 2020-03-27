@@ -1,19 +1,20 @@
 package edu.saddleback.cs4b.Backend.Messages;
 
 import edu.saddleback.cs4b.Backend.History;
+import edu.saddleback.cs4b.Backend.Interfaces.Requestable;
 
 public class RequestMessage extends BaseMessage {
     private RequestType type;
     private String channel;
-    private History channelHistory;
+    private Requestable requestable;
 
     private RequestMessage(String sender, String type,
                            RequestType requestType,
-                           String channel, History channelHistory) {
+                           String channel, Requestable requestable) {
         super(sender, type);
         this.type = requestType;
         this.channel = channel;
-        this.channelHistory = channelHistory;
+        this.requestable = requestable;
     }
 
     public RequestMessage(RequestType requestType, String channel) {
