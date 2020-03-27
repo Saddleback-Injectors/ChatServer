@@ -6,6 +6,7 @@ public class RequestMessage extends BaseMessage {
     private RequestType type;
     private String channel;
     private Requestable requestable;
+    private Runnable requester;
 
     private RequestMessage(String sender, String type,
                            RequestType requestType,
@@ -14,6 +15,7 @@ public class RequestMessage extends BaseMessage {
         this.type = requestType;
         this.channel = channel;
         this.requestable = requestable;
+        this.requester = null;
     }
 
     public RequestMessage(RequestType requestType, String channel) {
@@ -27,6 +29,7 @@ public class RequestMessage extends BaseMessage {
     public RequestType getRequestType() { return type; }
     public String getChannel() { return channel; }
     public Requestable getRequestable() { return requestable; }
+    public Runnable getRequester() { return requester; }
 
     public void setRequestable(Requestable requestable) {
         this.requestable = requestable;
