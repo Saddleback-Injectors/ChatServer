@@ -1,6 +1,5 @@
 package edu.saddleback.cs4b.Backend.Messages;
 
-import edu.saddleback.cs4b.Backend.History;
 import edu.saddleback.cs4b.Backend.Interfaces.Requestable;
 
 public class RequestMessage extends BaseMessage {
@@ -28,4 +27,8 @@ public class RequestMessage extends BaseMessage {
     public RequestType getRequestType() { return type; }
     public String getChannel() { return channel; }
     public Requestable getRequestable() { return requestable; }
+
+    public void setRequestable(Requestable requestable) {
+        this.requestable = requestable;
+    }
 }
