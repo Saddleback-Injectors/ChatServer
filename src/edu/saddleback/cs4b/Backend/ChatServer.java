@@ -12,24 +12,26 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ChatServer {
-    private final List<String> channels;
+    //private final Set<String> channels;
     private final BlockingQueue<Packet> messages;
     private final List<ClientConnection> clients;
+    private final Map<String, History> historyMap;
     private final ServerPublisher publisher;
     private final int port = 8000;
     private ServerSocket server;
 
     public ChatServer() {
-        this.channels = new ArrayList<>();
+        //this.channels = new HashSet<>();
         this.messages = new LinkedBlockingQueue<>();
         this.clients  = new ArrayList<>();
         this.publisher = new ServerPublisher(clients, messages);
+        this.historyMap = new Hashtable<>();
         Thread pubThread = new Thread(publisher);
         pubThread.start();
     }
