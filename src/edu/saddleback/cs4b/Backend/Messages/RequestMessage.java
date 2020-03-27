@@ -24,4 +24,8 @@ public class RequestMessage extends BaseMessage {
     public RequestMessage(String sender, RequestType requestType, String channel) {
         this(sender, requestType.getType(), requestType, channel, null);
     }
+
+    public RequestType getRequestType() { return type; }
+    public String getChannel() { return channel; }
+    public Requestable getRequestable() { return requestable; }
 }
