@@ -41,6 +41,7 @@ public class ServerPublisher implements Runnable {
                     RequestMessage requestResponse = new RequestMessage(requestMessage.getSender(),
                                                       RequestType.HISTORY,
                                                       requestMessage.getChannel());
+                    checkAndCreateHistory(requestMessage.getChannel());
                     requestResponse.setRequestable((History)historyMap.get(requestMessage.getChannel()).clone());
 
                     ObjectOutputStream os = ((ClientConnection)requestMessage.getRequester()).getOutputStream();
@@ -51,9 +52,7 @@ public class ServerPublisher implements Runnable {
                     isRunning = false;
                 } else {
                     String msgChannel = getChannel(curPacket);
-                    if (!historyMap.containsKey(msgChannel)) {
-                        historyMap.put(msgChannel, new History());
-                    }
+                    checkAndCreateHistory(msgChannel);
                     logHistory(msgChannel, curPacket);
                     // right now this method only invoked for
                     // picture and text messages
@@ -64,6 +63,12 @@ public class ServerPublisher implements Runnable {
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
+        }
+    }
+
+    private void checkAndCreateHistory(String channel) {
+        if (!historyMap.containsKey(channel)) {
+            historyMap.put(channel, new History());
         }
     }
 
