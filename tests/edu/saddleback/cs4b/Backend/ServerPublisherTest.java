@@ -25,7 +25,7 @@ class ServerPublisherTest {
         channels = new HashSet<>();
         clientConnections = new ArrayList<>();
         cc = new ClientConnection(channels);
-        pub = new ServerPublisher(clientConnections, null);
+        pub = new ServerPublisher(clientConnections, null, null);
         clientConnections.add(cc);
     }
 
