@@ -28,10 +28,10 @@ public class ChatServer {
 
     public ChatServer() {
         //this.channels = new HashSet<>();
+        this.historyMap = new Hashtable<>();
         this.messages = new LinkedBlockingQueue<>();
         this.clients  = new ArrayList<>();
-        this.publisher = new ServerPublisher(clients, messages);
-        this.historyMap = new Hashtable<>();
+        this.publisher = new ServerPublisher(clients, messages, historyMap);
         Thread pubThread = new Thread(publisher);
         pubThread.start();
     }

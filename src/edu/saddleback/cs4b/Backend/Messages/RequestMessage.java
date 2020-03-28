@@ -34,4 +34,5 @@ public class RequestMessage extends BaseMessage {
     public void setRequestable(Requestable requestable) {
         this.requestable = requestable;
     }
+    public void setRequester(Runnable requester) { this.requester = requester; }
 }

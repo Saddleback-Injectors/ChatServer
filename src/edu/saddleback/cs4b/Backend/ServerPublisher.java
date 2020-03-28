@@ -31,10 +31,21 @@ public class ServerPublisher implements Runnable {
                 Packet curPacket = messages.take();
                 BaseMessage msg = (BaseMessage)curPacket.getData();
                 if (msg instanceof DisconnectMessage) {
-                    ClientConnection cc = (ClientConnection)((DisconnectMessage) msg).getClient();
+                    ClientConnection cc = (ClientConnection) ((DisconnectMessage) msg).getClient();
                     clients.remove(cc);
                     ObjectOutputStream os = cc.getOutputStream();
                     os.writeObject(new Packet("Disconnect", new DisconnectMessage(null)));
+                    os.flush();
+                } else if (msg instanceof RequestMessage) {
+                    RequestMessage requestMessage = (RequestMessage)msg;
+                    RequestMessage requestResponse = new RequestMessage(requestMessage.getSender(),
+                                                      RequestType.HISTORY,
+                                                      requestMessage.getChannel());
+                    requestResponse.setRequestable(historyMap.get(requestMessage.getChannel()));
+
+                    ObjectOutputStream os = ((ClientConnection)requestMessage.getRequester()).getOutputStream();
+                    Packet packet = new Packet("req-msg", requestResponse);
+                    os.writeObject(packet);
                     os.flush();
                 } else if (msg instanceof ServerTermination) {
                     isRunning = false;

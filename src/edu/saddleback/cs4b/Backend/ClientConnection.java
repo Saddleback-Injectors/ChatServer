@@ -100,6 +100,10 @@ public class ClientConnection implements Runnable {
         } else if (data instanceof UpdateMessage) {
             // check the diff's and send out necessary notifications
             updateAndNotify((UpdateMessage)data);
+        } else if (data instanceof RequestMessage) {
+            RequestMessage requestMessage = (RequestMessage)data;
+            requestMessage.setRequester(this);
+            messages.add(packet);
         }
     }
 
