@@ -41,7 +41,7 @@ public class ServerPublisher implements Runnable {
                     RequestMessage requestResponse = new RequestMessage(requestMessage.getSender(),
                                                       RequestType.HISTORY,
                                                       requestMessage.getChannel());
-                    requestResponse.setRequestable(historyMap.get(requestMessage.getChannel()));
+                    requestResponse.setRequestable((History)historyMap.get(requestMessage.getChannel()).clone());
 
                     ObjectOutputStream os = ((ClientConnection)requestMessage.getRequester()).getOutputStream();
                     Packet packet = new Packet("req-msg", requestResponse);
